@@ -8,6 +8,23 @@ const GlobalStyle = createGlobalStyle`
   ${normalize}
   ${inter}
 
+  :root {
+    --header-background-color: #e8e8e8;
+    --header-title-color: #222222;
+    --header-title-icon-color: #666666;
+    --header-title-icon-border-color: #666666;
+    --header-title-span-color: #4506f2;
+    --header-link-color: #666666;
+    --header-link-border-color: #cccccc;
+    --header-link-hover-color: #111111;
+
+    --item-background-color: #f4f4f4;
+    --item-title-color: #4506f2;
+    --item-title-hover-color: #222222;
+    --item-title-url-color: #999999;
+    --item-info-color: #222222;
+  }
+
   body {
     font-family: 'Inter', sans-serif;
   }
