@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import GlobalStyle from './GlobalStyle'
 import Header from './Header'
-import Items from './Items'
+import ItemList from './ItemList'
 
 const AppContainer = styled.div`
   width: 100%;
@@ -20,7 +20,7 @@ const App = () => {
       <GlobalStyle />
       <AppBody>
         <Header />
-        <Items />
+        <ItemList />
       </AppBody>
     </AppContainer>
   )

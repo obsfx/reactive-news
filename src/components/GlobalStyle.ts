@@ -19,10 +19,12 @@ const GlobalStyle = createGlobalStyle`
     --header-link-hover-color: #111111;
 
     --item-background-color: #f4f4f4;
-    --item-title-color: #4506f2;
-    --item-title-hover-color: #222222;
+    --item-title-color: #111111;
     --item-title-url-color: #999999;
-    --item-info-color: #222222;
+    --item-info-color: #656565;
+    --item-info-link-color: #444444;
+
+    --load-more-button-color: #656565;
   }
 
   body {

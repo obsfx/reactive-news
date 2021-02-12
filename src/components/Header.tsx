@@ -4,7 +4,7 @@ const HeaderContainer = styled.div`
   display: flex;
   padding: 5px;
   background-color: var(--header-background-color);
-  font-size: 14px;
+  font-size: 12px;
 `
 
 const HeaderTitleIcon = styled.a`
@@ -22,15 +22,19 @@ const HeaderTitle = styled.div`
   align-items: center;
   color: var(--header-title-color);
   font-weight: 300;
-
-  span {
-    color: var(--header-title-span-color);
-    font-weight: 500;
-  }
 `
 
-const HeaderTitleGithub = styled.a`
+const HeaderTitleColored = styled.span`
+  color: var(--header-title-span-color);
+  font-weight: 400;
+`
+
+const HeaderGithub = styled.a`
   text-decoration: none;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-self: center;
   margin-left: 5px;
   font-size: 10px;
   color: var(--header-link-color);
@@ -41,9 +45,9 @@ const HeaderTitleGithub = styled.a`
 `
 
 const HeaderLinks = styled.div`
+  margin-left: 10px;
   display: flex;
   align-items: center;
-  margin-left: 15px;
 `
 
 const HeaderLink = styled.a`
@@ -66,8 +70,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTitle>
         <HeaderTitleIcon href="#">Y</HeaderTitleIcon>
-        <span>Reactive</span>&nbsp;News
-        <HeaderTitleGithub href="#">(github/obsfx/reactive-news)</HeaderTitleGithub>
+        <HeaderTitleColored>Reactive</HeaderTitleColored>&nbsp;News
       </HeaderTitle>
 
       <HeaderLinks>
@@ -79,6 +82,8 @@ const Header = () => {
         <HeaderLink href="#">show</HeaderLink>
         <HeaderLink href="#">jobs</HeaderLink>
       </HeaderLinks>
+
+      <HeaderGithub href="#">(github/obsfx/reactive-news)</HeaderGithub>
     </HeaderContainer>
   )
 }
