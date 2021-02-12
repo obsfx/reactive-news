@@ -24,6 +24,8 @@ const GlobalStyle = createGlobalStyle`
     --item-info-color: #656565;
     --item-info-link-color: #444444;
 
+    --item-loader-background-color: #e8e8e8;
+
     --load-more-button-color: #656565;
   }
 
