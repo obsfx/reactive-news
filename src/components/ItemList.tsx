@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import useFetchItemIDs from '../hooks/useFetchItemIDs'
+import useFetchItemDetails from '../hooks/useFetchItemDetails'
 import Item from './Item'
 import ItemLoader from './ItemLoader'
 
@@ -33,69 +35,47 @@ type ItemData = {
 }
 
 const ItemList = () => {
-  const [topStoriesArr, setTopStoriesArr] = useState<number[]>([])
-  const [loaderCount, setLoaderCount] = useState<number>(0)
   const [items, setItems] = useState<ItemData[]>([])
-  const [loadButtonVisibility, setLoadButtonVisibility] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
 
   const pageLength: number = 30
+  const [loaderCount, setLoaderCount] = useState<number>(pageLength)
 
-  useEffect(() => {
-    const getTopStories = async () => {
-      setLoaderCount(pageLength)
+  const [loadButtonVisibility, setLoadButtonVisibility] = useState<boolean>(false)
 
-      const topStoriesResponse: Response = await fetch(
-        'https://hacker-news.firebaseio.com/v0/topstories.json'
-      )
-      setTopStoriesArr((await topStoriesResponse.json()) || [])
-    }
-    getTopStories()
-  }, [])
+  const itemIDs: number[] = useFetchItemIDs('https://hacker-news.firebaseio.com/v0/topstories.json')
 
-  useEffect(() => {
-    const fetchItemData = async () => {
-      setLoadButtonVisibility(false)
-
-      const itemsForCurrentPage = topStoriesArr.slice(page * pageLength, (page + 1) * pageLength)
-
-      setLoaderCount(itemsForCurrentPage.length)
-
-      const itemDataPromises: Promise<Response>[] = itemsForCurrentPage.map(async (e: number) => {
-        return fetch(`https://hacker-news.firebaseio.com/v0/item/${e}.json`)
-      })
-
-      const itemDataResponses: Response[] = await Promise.all([...itemDataPromises])
-      const itemRawDataArr: any[] = await Promise.all([
-        ...itemDataResponses.map((e: Response) => e.json()),
+  useFetchItemDetails(
+    `https://hacker-news.firebaseio.com/v0/item/{ID}.json`,
+    itemIDs,
+    page,
+    pageLength,
+    (data: any[]) => {
+      setLoaderCount(0)
+      setItems((prev: ItemData[]) => [
+        ...prev,
+        ...data.map((item: any) => ({
+          by: item.by || '',
+          id: item.id || -1,
+          kids: item.kids || [],
+          score: item.score || 0,
+          time: item.time || 0,
+          title: item.title || '',
+          type: item.type || '',
+          url: item.url || '',
+        })),
       ])
 
-      const itemDataArr: ItemData[] = itemRawDataArr.map((item: any) => ({
-        by: item.by || '',
-        id: item.id || -1,
-        kids: item.kids || [],
-        score: item.score || 0,
-        time: item.time || 0,
-        title: item.title || '',
-        type: item.type || '',
-        url: item.url || '',
-      }))
-
-      setItems((prev: ItemData[]) => [...prev, ...itemDataArr])
-      setLoaderCount(0)
-
-      if (itemsForCurrentPage.length === pageLength) {
+      if (data.length === pageLength) {
         setLoadButtonVisibility(true)
       }
     }
-
-    if (topStoriesArr.length > 0) {
-      fetchItemData()
-    }
-  }, [topStoriesArr, page])
+  )
 
   const handleLoadMoreButtonClick = () => {
-    setPage((prev) => prev + 1)
+    setLoaderCount(pageLength)
+    setLoadButtonVisibility(false)
+    setPage((prev: number) => prev + 1)
   }
 
   return (
