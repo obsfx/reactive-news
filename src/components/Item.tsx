@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const ItemContainer = styled.div`
   display: flex;
@@ -18,8 +19,18 @@ const ItemBody = styled.div`
   flex-direction: column;
   margin-bottom: 5px;
 `
-
 const ItemTitle = styled.a`
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--item-title-color);
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const ItemTitleRoute = styled((props) => <Link {...props} />)`
   text-decoration: none;
   font-size: 12px;
   font-weight: 500;
@@ -41,7 +52,7 @@ const ItemInfo = styled.div`
   margin-top: 5px;
 `
 
-const ItemInfoLink = styled.a`
+const ItemInfoLink = styled((props) => <Link {...props} />)`
   text-decoration: none;
   color: var(--item-info-link-color);
 
@@ -51,6 +62,7 @@ const ItemInfoLink = styled.a`
 `
 
 type Props = {
+  itemID: number
   itemType: string
   itemNumber: number
   itemURL: string
@@ -64,6 +76,7 @@ type Props = {
 
 const Item = (props: Props) => {
   const {
+    itemID,
     itemType,
     itemNumber,
     itemURL,
@@ -92,18 +105,22 @@ const Item = (props: Props) => {
     <ItemContainer>
       <ItemNumber>{itemNumber}.</ItemNumber>
       <ItemBody>
-        <ItemTitle href={itemURL}>
-          {itemTitle}
-          <ItemTitleURL> ({itemTitleURL})</ItemTitleURL>
-        </ItemTitle>
+        {itemURL ? (
+          <ItemTitle href={itemURL}>
+            {itemTitle}
+            <ItemTitleURL> ({itemTitleURL})</ItemTitleURL>
+          </ItemTitle>
+        ) : (
+          <ItemTitleRoute to={`/items/${itemID}`}>{itemTitle}</ItemTitleRoute>
+        )}
         <ItemInfo>
-          {itemScore} points by <ItemInfoLink href="#">{itemAuthor}</ItemInfoLink>
+          {itemScore} points by <ItemInfoLink to={`/items/${itemID}`}>{itemAuthor}</ItemInfoLink>
           {' | '}
-          <ItemInfoLink href="#"> {timeDiff(itemEpoch)}</ItemInfoLink>
-          {itemType == 'story' && (
+          <ItemInfoLink to={`/items/${itemID}`}> {timeDiff(itemEpoch)}</ItemInfoLink>
+          {itemType === 'story' && (
             <>
               {' | '}
-              <ItemInfoLink href="#">
+              <ItemInfoLink to={`/items/${itemID}`}>
                 {itemCommentCount > 0 ? `${itemCommentCount} comments` : 'discuss'}
               </ItemInfoLink>
             </>

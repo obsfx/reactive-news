@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import useFetchItemIDs from '../hooks/useFetchItemIDs'
 import useFetchItemDetails from '../hooks/useFetchItemDetails'
@@ -34,7 +34,13 @@ type ItemData = {
   url: string
 }
 
-const ItemList = () => {
+type Props = {
+  listEndpoint: string
+}
+
+const ItemList = (props: Props) => {
+  const { listEndpoint } = props
+
   const [items, setItems] = useState<ItemData[]>([])
   const [page, setPage] = useState<number>(0)
 
@@ -43,7 +49,7 @@ const ItemList = () => {
 
   const [loadButtonVisibility, setLoadButtonVisibility] = useState<boolean>(false)
 
-  const itemIDs: number[] = useFetchItemIDs('https://hacker-news.firebaseio.com/v0/topstories.json')
+  const itemIDs: number[] = useFetchItemIDs(listEndpoint)
 
   useFetchItemDetails(
     `https://hacker-news.firebaseio.com/v0/item/{ID}.json`,
@@ -82,7 +88,8 @@ const ItemList = () => {
     <ItemListContainer>
       {items.map((item: any, idx: number) => (
         <Item
-          key={idx}
+          key={item.id}
+          itemID={item.id}
           itemType={item.type}
           itemNumber={idx + 1}
           itemURL={item.url}
@@ -95,7 +102,9 @@ const ItemList = () => {
         />
       ))}
 
-      {new Array(loaderCount).fill(<ItemLoader />)}
+      {new Array(loaderCount).fill(0).map((_, idx: number) => (
+        <ItemLoader key={idx} />
+      ))}
 
       {loadButtonVisibility && (
         <LoadMoreButton onClick={handleLoadMoreButtonClick}>More</LoadMoreButton>

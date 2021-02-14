@@ -15,13 +15,17 @@ const useFetchItemDetails = (
         return fetch(endpoint.replace('{ID}', id.toString()))
       })
 
-      const itemDataResponses: Response[] = await Promise.all([...itemDataPromises])
+      try {
+        const itemDataResponses: Response[] = await Promise.all([...itemDataPromises])
+        const itemRawDataArr: any[] = await Promise.all([
+          ...itemDataResponses.map((e: Response) => e.json()),
+        ])
 
-      const itemRawDataArr: any[] = await Promise.all([
-        ...itemDataResponses.map((e: Response) => e.json()),
-      ])
-
-      onComplete(itemRawDataArr)
+        onComplete(itemRawDataArr)
+      } catch (e) {
+        // TODO: Handle reject
+        onComplete([])
+      }
     }
 
     if (IDList.length > 0) {
