@@ -4,7 +4,7 @@
 
 ![](https://raw.githubusercontent.com/obsfx/reactive-news/main/media/b.png)
 
-This is a `Hacker News` clone that is developed using [`Hacker News API`](https://github.com/HackerNews/API), `React`, `TypeScript`, [`react-router`](https://github.com/ReactTraining/react-router) and [styled-components](https://github.com/styled-components/styled-components).
+This is a `Hacker News` clone that is developed using [`Hacker News API`](https://github.com/HackerNews/API), `React`, `TypeScript`, [`react-router`](https://github.com/ReactTraining/react-router) and [`styled-components`](https://github.com/styled-components/styled-components).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
