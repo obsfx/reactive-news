@@ -1,8 +1,8 @@
 # Reactive News
 
-![https://raw.githubusercontent.com/obsfx/reactive-news/main/media/a.png]()
+![](https://raw.githubusercontent.com/obsfx/reactive-news/main/media/a.png)
 
-![https://raw.githubusercontent.com/obsfx/reactive-news/main/media/b.png]()
+![](https://raw.githubusercontent.com/obsfx/reactive-news/main/media/b.png)
 
 This is a `Hacker News` clone that is developed using [`Hacker News API`](https://github.com/HackerNews/API), `React`, `TypeScript`, [`react-router`](https://github.com/ReactTraining/react-router) and [styled-components](https://github.com/styled-components/styled-components).
 
