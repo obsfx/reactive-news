@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import useFetchItemIDs from '../hooks/useFetchItemIDs'
-import useFetchItemDetails from '../hooks/useFetchItemDetails'
+import useFetchDetailsOfItems from '../hooks/useFetchDetailsOfItems'
 import Item from './Item'
 import ItemLoader from './ItemLoader'
 
@@ -39,48 +39,40 @@ type Props = {
 }
 
 const ItemList = (props: Props) => {
+  const pageLength: number = 30
+
   const { listEndpoint } = props
 
   const [items, setItems] = useState<ItemData[]>([])
   const [page, setPage] = useState<number>(0)
 
-  const pageLength: number = 30
-  const [loaderCount, setLoaderCount] = useState<number>(pageLength)
-
-  const [loadButtonVisibility, setLoadButtonVisibility] = useState<boolean>(false)
-
   const itemIDs: number[] = useFetchItemIDs(listEndpoint)
 
-  useFetchItemDetails(
+  const [status, itemRawDataArr] = useFetchDetailsOfItems(
     `https://hacker-news.firebaseio.com/v0/item/{ID}.json`,
     itemIDs,
     page,
-    pageLength,
-    (data: any[]) => {
-      setLoaderCount(0)
-      setItems((prev: ItemData[]) => [
-        ...prev,
-        ...data.map((item: any) => ({
-          by: item.by || '',
-          id: item.id || -1,
-          kids: item.kids || [],
-          score: item.score || 0,
-          time: item.time || 0,
-          title: item.title || '',
-          type: item.type || '',
-          url: item.url || '',
-        })),
-      ])
-
-      if (data.length === pageLength) {
-        setLoadButtonVisibility(true)
-      }
-    }
+    pageLength
   )
 
+  useEffect(() => {
+    setItems((prev: ItemData[]) => [
+      ...prev,
+      ...itemRawDataArr.map((item: any) => ({
+        by: item.by || '',
+        id: item.id || -1,
+        kids: item.kids || [],
+        score: item.score || 0,
+        time: item.time || 0,
+        title: item.title || '',
+        type: item.type || '',
+        url: item.url || '',
+        text: item.text || '',
+      })),
+    ])
+  }, [itemRawDataArr])
+
   const handleLoadMoreButtonClick = () => {
-    setLoaderCount(pageLength)
-    setLoadButtonVisibility(false)
     setPage((prev: number) => prev + 1)
   }
 
@@ -102,11 +94,10 @@ const ItemList = (props: Props) => {
         />
       ))}
 
-      {new Array(loaderCount).fill(0).map((_, idx: number) => (
-        <ItemLoader key={idx} />
-      ))}
+      {status !== 'done' &&
+        new Array(pageLength).fill(0).map((_, idx: number) => <ItemLoader key={idx} />)}
 
-      {loadButtonVisibility && (
+      {status === 'done' && (
         <LoadMoreButton onClick={handleLoadMoreButtonClick}>More</LoadMoreButton>
       )}
     </ItemListContainer>

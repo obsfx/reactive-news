@@ -7,6 +7,7 @@ import News from './News'
 import Ask from './Ask'
 import Show from './Show'
 import Jobs from './Jobs'
+import ItemPage from './ItemPage'
 
 const AppContainer = styled.div`
   width: 100%;
@@ -41,6 +42,9 @@ const App = () => {
             </Route>
             <Route path="/jobs">
               <Jobs />
+            </Route>
+            <Route path="/items/:id">
+              <ItemPage />
             </Route>
           </Switch>
         </AppBody>
