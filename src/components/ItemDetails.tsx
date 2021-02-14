@@ -9,10 +9,6 @@ const ItemDetailsContainer = styled.div`
   background-color: var(--item-details-background-color);
 `
 
-const ItemDetailsHead = styled.div`
-  margin-bottom: 15px;
-`
-
 const ItemDetailsTitle = styled((props) => <Link {...props} />)`
   text-decoration: none;
   font-size: 14px;
@@ -25,8 +21,18 @@ const ItemDetailsTitle = styled((props) => <Link {...props} />)`
 `
 
 const ItemDetailsText = styled.div`
+  margin-top: 15px;
   font-size: 12px;
   color: var(--item-details-text-color);
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  a {
+    color: var(--item-details-text-link-color);
+  }
 `
 
 const ItemDetailsInfo = styled.div`
@@ -82,7 +88,7 @@ const ItemDetails = (props: Props) => {
 
   return (
     <ItemDetailsContainer>
-      <ItemDetailsHead>
+      <>
         <ItemDetailsTitle to={`/items/${itemID}`}>{itemTitle}</ItemDetailsTitle>
         <ItemDetailsInfo>
           {itemScore} points by{' '}
@@ -98,8 +104,9 @@ const ItemDetails = (props: Props) => {
             </>
           )}
         </ItemDetailsInfo>
-      </ItemDetailsHead>
-      <ItemDetailsText>{ReactHtmlParser(itemText)}</ItemDetailsText>
+      </>
+
+      {itemText !== '' && <ItemDetailsText>{ReactHtmlParser(itemText)}</ItemDetailsText>}
     </ItemDetailsContainer>
   )
 }

@@ -1,11 +1,19 @@
 import styled from 'styled-components'
 
-const ItemLoader = () => {
+type Props = {
+  width: string
+  height: string
+  margin: string
+}
+
+const ItemLoader = (props: Props) => {
+  const { width, height, margin } = props
+
   const ItemLoaderContainer = styled.div`
     background-color: var(--item-loader-background-color);
-    width: 100%;
-    height: 45px;
-    margin: 2px 0px;
+    width: ${width};
+    height: ${height};
+    margin: ${margin};
   `
 
   return <ItemLoaderContainer />

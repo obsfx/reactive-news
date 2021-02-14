@@ -1,51 +1,20 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useParams, Link } from 'react-router-dom'
-import ReactHtmlParser from 'react-html-parser'
+import { useParams } from 'react-router-dom'
 import useFetchDetailsOfItems from '../hooks/useFetchDetailsOfItems'
 import ItemDetails from './ItemDetails'
 import ItemLoader from './ItemLoader'
+import Comment from './Comment'
 
 const ItemDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px 10px;
+  padding: 0px 10px;
   background-color: var(--item-details-background-color);
 `
 
-const ItemDetailsHead = styled.div`
-  margin-bottom: 15px;
-`
-
-const ItemDetailsTitle = styled((props) => <Link {...props} />)`
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--item-title-color);
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-const ItemDetailsText = styled.div`
-  font-size: 12px;
-  color: var(--item-details-text-color);
-`
-
-const ItemDetailsInfo = styled.div`
-  font-size: 9px;
-  color: var(--item-info-color);
-  margin-top: 5px;
-`
-
-const ItemDetailsInfoLink = styled((props) => <Link {...props} />)`
-  text-decoration: none;
-  color: var(--item-info-link-color);
-
-  &:hover {
-    text-decoration: underline;
-  }
+const ItemDetailsComments = styled.div`
+  padding: 5px;
 `
 
 type ItemDetailsData = {
@@ -93,17 +62,26 @@ const ItemPage = () => {
   return (
     <ItemDetailsContainer>
       {details && (
-        <ItemDetails
-          itemAuthor={details.by}
-          itemID={details.id}
-          itemCommentCount={details.kids.length}
-          itemScore={details.score}
-          itemEpoch={details.time}
-          itemTitle={details.title}
-          itemType={details.type}
-          itemText={details.text}
-        />
+        <>
+          <ItemDetails
+            itemAuthor={details.by}
+            itemID={details.id}
+            itemCommentCount={details.kids.length}
+            itemScore={details.score}
+            itemEpoch={details.time}
+            itemTitle={details.title}
+            itemType={details.type}
+            itemText={details.text}
+          />
+
+          <ItemDetailsComments>
+            {details.kids.map((id: number) => (
+              <Comment key={id} id={id} />
+            ))}
+          </ItemDetailsComments>
+        </>
       )}
+      {status !== 'done' && <ItemLoader width="100%" height="80px" margin="5px 0px" />}
     </ItemDetailsContainer>
   )
 }

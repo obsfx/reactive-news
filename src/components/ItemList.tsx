@@ -95,7 +95,11 @@ const ItemList = (props: Props) => {
       ))}
 
       {status !== 'done' &&
-        new Array(pageLength).fill(0).map((_, idx: number) => <ItemLoader key={idx} />)}
+        new Array(pageLength)
+          .fill(0)
+          .map((_, idx: number) => (
+            <ItemLoader key={idx} width="100%" height="45px" margin="2px 0px" />
+          ))}
 
       {status === 'done' && (
         <LoadMoreButton onClick={handleLoadMoreButtonClick}>More</LoadMoreButton>

@@ -12,6 +12,7 @@ const ItemNumber = styled.span`
   font-size: 12px;
   text-align: right;
   min-width: 25px;
+  color: var(--item-number-color);
 `
 
 const ItemBody = styled.div`

@@ -33,8 +33,6 @@ const HeaderTitleColored = styled.span`
 const HeaderGithub = styled.a`
   text-decoration: none;
   display: flex;
-  flex: 1;
-  justify-content: flex-end;
   align-self: center;
   margin-left: 5px;
   font-size: 10px;
@@ -48,6 +46,7 @@ const HeaderGithub = styled.a`
 const HeaderLinks = styled.div`
   margin-left: 10px;
   display: flex;
+  flex: 1;
   align-items: center;
 `
 
