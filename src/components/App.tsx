@@ -28,7 +28,7 @@ const App = () => {
         <AppBody>
           <Header />
           <Switch>
-            <Route exact path="/">
+            <Route exact={true} path="/">
               <Hits />
             </Route>
             <Route path="/news">

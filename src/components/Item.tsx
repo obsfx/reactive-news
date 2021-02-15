@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import ItemLoader from './ItemLoader'
 
 const ItemContainer = styled.div`
   display: flex;
@@ -62,35 +64,51 @@ const ItemInfoLink = styled((props) => <Link {...props} />)`
   }
 `
 
+export type ItemData = {
+  by: string
+  id: number
+  score: number
+  time: number
+  title: string
+  type: string
+  url: string
+  text: string
+}
+
 type Props = {
-  itemID: number
-  itemType: string
-  itemNumber: number
-  itemURL: string
-  itemTitle: string
-  itemTitleURL: string
-  itemScore: string
-  itemAuthor: string
-  itemEpoch: number
-  itemCommentCount: number
+  number: number
+  id: number
 }
 
 const Item = (props: Props) => {
-  const {
-    itemID,
-    itemType,
-    itemNumber,
-    itemURL,
-    itemTitle,
-    itemTitleURL,
-    itemScore,
-    itemAuthor,
-    itemEpoch,
-    itemCommentCount,
-  } = props
+  const { number, id } = props
+  const [item, setItem] = useState<ItemData | null>(null)
 
-  const timeDiff = (itemEpoch: number) => {
-    const diff = Math.abs(Date.now() - itemEpoch * 1000)
+  useEffect(() => {
+    const fetchItem = async (itemID: number) => {
+      const response: Response = await fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${itemID}.json`
+      )
+
+      const item: any = await response.json()
+
+      setItem({
+        by: item.by || '',
+        id: item.id || -1,
+        score: item.score || 0,
+        time: item.time || 0,
+        title: item.title || '',
+        type: item.type || '',
+        url: item.url || '',
+        text: item.text || '',
+      })
+    }
+
+    fetchItem(id)
+  }, [])
+
+  const timeDiff = (epoch: number) => {
+    const diff = Math.abs(Date.now() - epoch * 1000)
 
     const days: number = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours: number = Math.floor(diff / (1000 * 60 * 60))
@@ -104,30 +122,32 @@ const Item = (props: Props) => {
 
   return (
     <ItemContainer>
-      <ItemNumber>{itemNumber}.</ItemNumber>
-      <ItemBody>
-        {itemURL ? (
-          <ItemTitle href={itemURL}>
-            {itemTitle}
-            <ItemTitleURL> ({itemTitleURL})</ItemTitleURL>
-          </ItemTitle>
-        ) : (
-          <ItemTitleRoute to={`/items/${itemID}`}>{itemTitle}</ItemTitleRoute>
-        )}
-        <ItemInfo>
-          {itemScore} points by <ItemInfoLink to={`/items/${itemID}`}>{itemAuthor}</ItemInfoLink>
-          {' | '}
-          <ItemInfoLink to={`/items/${itemID}`}> {timeDiff(itemEpoch)}</ItemInfoLink>
-          {itemType === 'story' && (
-            <>
-              {' | '}
-              <ItemInfoLink to={`/items/${itemID}`}>
-                {itemCommentCount > 0 ? `${itemCommentCount} comments` : 'discuss'}
-              </ItemInfoLink>
-            </>
+      <ItemNumber>{number}.</ItemNumber>
+      {item ? (
+        <ItemBody>
+          {item.url !== '' ? (
+            <ItemTitle href={item.url}>
+              {item.title}
+              <ItemTitleURL> ({item.url.split('/')[2]})</ItemTitleURL>
+            </ItemTitle>
+          ) : (
+            <ItemTitleRoute to={`/items/${item.id}`}>{item.title}</ItemTitleRoute>
           )}
-        </ItemInfo>
-      </ItemBody>
+          <ItemInfo>
+            {item.score} points by <ItemInfoLink to={`/items/${item.id}`}>{item.by}</ItemInfoLink>
+            {' | '}
+            <ItemInfoLink to={`/items/${item.id}`}> {timeDiff(item.time)}</ItemInfoLink>
+            {item.type === 'story' && (
+              <>
+                {' | '}
+                <ItemInfoLink to={`/items/${item.id}`}>discuss</ItemInfoLink>
+              </>
+            )}
+          </ItemInfo>
+        </ItemBody>
+      ) : (
+        <ItemLoader width="100%" height="45px" margin="2px 0px" />
+      )}
     </ItemContainer>
   )
 }

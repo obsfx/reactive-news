@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import useFetchDetailsOfItems from '../hooks/useFetchDetailsOfItems'
 import ItemDetails from './ItemDetails'
 import ItemLoader from './ItemLoader'
 import Comment from './Comment'
@@ -17,7 +16,7 @@ const ItemDetailsComments = styled.div`
   padding: 5px;
 `
 
-type ItemDetailsData = {
+export type ItemDetailsData = {
   by: string
   id: number
   kids: number[]
@@ -31,20 +30,16 @@ type ItemDetailsData = {
 
 const ItemPage = () => {
   const { id } = useParams<{ id: string }>()
-  const [itemID] = useState<number[]>([Number(id)])
   const [details, setDetails] = useState<ItemDetailsData | null>(null)
 
-  const [status, itemRawDataArr] = useFetchDetailsOfItems(
-    `https://hacker-news.firebaseio.com/v0/item/{ID}.json`,
-    itemID,
-    0,
-    1
-  )
-
   useEffect(() => {
-    const [item] = itemRawDataArr
+    const fetchItem = async (itemID: number) => {
+      const response: Response = await fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${itemID}.json`
+      )
 
-    if (item) {
+      const item: any = await response.json()
+
       setDetails({
         by: item.by || '',
         id: item.id || -1,
@@ -57,20 +52,20 @@ const ItemPage = () => {
         text: item.text || '',
       })
     }
-  }, [itemRawDataArr])
+
+    fetchItem(Number(id))
+  }, [])
 
   return (
     <ItemDetailsContainer>
-      {details && (
+      {details ? (
         <>
           <ItemDetails
             itemAuthor={details.by}
             itemID={details.id}
-            itemCommentCount={details.kids.length}
             itemScore={details.score}
             itemEpoch={details.time}
             itemTitle={details.title}
-            itemType={details.type}
             itemText={details.text}
           />
 
@@ -80,8 +75,9 @@ const ItemPage = () => {
             ))}
           </ItemDetailsComments>
         </>
+      ) : (
+        <ItemLoader width="100%" height="80px" margin="5px 0px" />
       )}
-      {status !== 'done' && <ItemLoader width="100%" height="80px" margin="5px 0px" />}
     </ItemDetailsContainer>
   )
 }

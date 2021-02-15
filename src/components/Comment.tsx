@@ -53,17 +53,17 @@ const Comment = (props: Props) => {
   const [commentData, setCommentData] = useState<CommentData | null>(null)
 
   useEffect(() => {
-    const fetchComment = async (id: number): Promise<CommentData> => {
+    const fetchComment = async (commentID: number): Promise<CommentData> => {
       const response: Response = await fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+        `https://hacker-news.firebaseio.com/v0/item/${commentID}.json`
       )
       const comment: any = await response.json()
 
       const rawCommentData: any[] = comment.kids
-        ? await Promise.all([...comment.kids.map((id: number) => fetchComment(id))])
+        ? await Promise.all([...comment.kids.map((kidID: number) => fetchComment(kidID))])
         : []
 
-      let childs: CommentData[] = rawCommentData.map((item: any) => ({
+      const childs: CommentData[] = rawCommentData.map((item: any) => ({
         comment: {
           by: item.comment.by || '',
           id: item.comment.id || -1,
@@ -80,15 +80,15 @@ const Comment = (props: Props) => {
     }
 
     const setComments = async () => {
-      const commentData: CommentData = await fetchComment(id)
-      setCommentData(commentData)
+      const commentRoot: CommentData = await fetchComment(id)
+      setCommentData(commentRoot)
     }
 
     setComments()
   }, [])
 
-  const createCommentTree = (commentData: CommentData): React.ReactNode => {
-    const { comment, childs } = commentData
+  const createCommentTree = (commentRootData: CommentData): React.ReactNode => {
+    const { comment, childs } = commentRootData
 
     return (
       <CommentContainer key={comment.id}>

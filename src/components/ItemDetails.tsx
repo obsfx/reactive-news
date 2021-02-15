@@ -53,25 +53,14 @@ const ItemDetailsInfoLink = styled((props) => <Link {...props} />)`
 type Props = {
   itemAuthor: string
   itemID: number
-  itemCommentCount: number
   itemScore: number
   itemEpoch: number
   itemTitle: string
-  itemType: string
   itemText: string
 }
 
 const ItemDetails = (props: Props) => {
-  const {
-    itemAuthor,
-    itemID,
-    itemCommentCount,
-    itemScore,
-    itemEpoch,
-    itemTitle,
-    itemType,
-    itemText,
-  } = props
+  const { itemAuthor, itemID, itemScore, itemEpoch, itemTitle, itemText } = props
 
   const timeDiff = (itemEpoch: number) => {
     const diff = Math.abs(Date.now() - itemEpoch * 1000)
@@ -95,14 +84,6 @@ const ItemDetails = (props: Props) => {
           <ItemDetailsInfoLink to={`/items/${itemID}`}>{itemAuthor}</ItemDetailsInfoLink>
           {' | '}
           <ItemDetailsInfoLink to={`/items/${itemID}`}> {timeDiff(itemEpoch)}</ItemDetailsInfoLink>
-          {itemType === 'story' && (
-            <>
-              {' | '}
-              <ItemDetailsInfoLink to={`/items/${itemID}`}>
-                {itemCommentCount > 0 ? `${itemCommentCount} comments` : 'discuss'}
-              </ItemDetailsInfoLink>
-            </>
-          )}
         </ItemDetailsInfo>
       </>
 
