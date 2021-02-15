@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/reactive-news/static/js/main.bafcdef2.chunk.js",
-    "main.js.map": "/reactive-news/static/js/main.bafcdef2.chunk.js.map",
+    "main.js": "/reactive-news/static/js/main.921a8974.chunk.js",
+    "main.js.map": "/reactive-news/static/js/main.921a8974.chunk.js.map",
     "runtime-main.js": "/reactive-news/static/js/runtime-main.e851981a.js",
     "runtime-main.js.map": "/reactive-news/static/js/runtime-main.e851981a.js.map",
     "static/css/2.6d4d6d4c.chunk.css": "/reactive-news/static/css/2.6d4d6d4c.chunk.css",
-    "static/js/2.13f848e2.chunk.js": "/reactive-news/static/js/2.13f848e2.chunk.js",
-    "static/js/2.13f848e2.chunk.js.map": "/reactive-news/static/js/2.13f848e2.chunk.js.map",
+    "static/js/2.5a3b2a51.chunk.js": "/reactive-news/static/js/2.5a3b2a51.chunk.js",
+    "static/js/2.5a3b2a51.chunk.js.map": "/reactive-news/static/js/2.5a3b2a51.chunk.js.map",
     "index.html": "/reactive-news/index.html",
     "static/css/2.6d4d6d4c.chunk.css.map": "/reactive-news/static/css/2.6d4d6d4c.chunk.css.map",
-    "static/js/2.13f848e2.chunk.js.LICENSE.txt": "/reactive-news/static/js/2.13f848e2.chunk.js.LICENSE.txt",
+    "static/js/2.5a3b2a51.chunk.js.LICENSE.txt": "/reactive-news/static/js/2.5a3b2a51.chunk.js.LICENSE.txt",
     "static/media/inter.css": "/reactive-news/static/media/Inter.var.a738a131.woff2"
   },
   "entrypoints": [
     "static/js/runtime-main.e851981a.js",
     "static/css/2.6d4d6d4c.chunk.css",
-    "static/js/2.13f848e2.chunk.js",
-    "static/js/main.bafcdef2.chunk.js"
+    "static/js/2.5a3b2a51.chunk.js",
+    "static/js/main.921a8974.chunk.js"
   ]
 }
