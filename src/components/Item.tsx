@@ -76,12 +76,12 @@ export type ItemData = {
 }
 
 type Props = {
-  number: number
+  idx: number
   id: number
 }
 
 const Item = (props: Props) => {
-  const { number, id } = props
+  const { idx, id } = props
   const [item, setItem] = useState<ItemData | null>(null)
 
   useEffect(() => {
@@ -90,17 +90,17 @@ const Item = (props: Props) => {
         `https://hacker-news.firebaseio.com/v0/item/${itemID}.json`
       )
 
-      const item: any = await response.json()
+      const itemResponse: any = await response.json()
 
       setItem({
-        by: item.by || '',
-        id: item.id || -1,
-        score: item.score || 0,
-        time: item.time || 0,
-        title: item.title || '',
-        type: item.type || '',
-        url: item.url || '',
-        text: item.text || '',
+        by: itemResponse.by || '',
+        id: itemResponse.id || -1,
+        score: itemResponse.score || 0,
+        time: itemResponse.time || 0,
+        title: itemResponse.title || '',
+        type: itemResponse.type || '',
+        url: itemResponse.url || '',
+        text: itemResponse.text || '',
       })
     }
 
@@ -122,7 +122,7 @@ const Item = (props: Props) => {
 
   return (
     <ItemContainer>
-      <ItemNumber>{number}.</ItemNumber>
+      <ItemNumber>{idx}.</ItemNumber>
       {item ? (
         <ItemBody>
           {item.url !== '' ? (
@@ -146,7 +146,7 @@ const Item = (props: Props) => {
           </ItemInfo>
         </ItemBody>
       ) : (
-        <ItemLoader width="100%" height="45px" margin="2px 0px" />
+        <ItemLoader width="100%" height="35px" margin="2px 0px" />
       )}
     </ItemContainer>
   )

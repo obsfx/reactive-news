@@ -41,7 +41,7 @@ const ItemList = (props: Props) => {
   return (
     <ItemListContainer>
       {itemIDs.slice(0, (page + 1) * pageLength).map((id: number, idx: number) => (
-        <Item key={id} number={idx + 1} id={id} />
+        <Item key={id} idx={idx + 1} id={id} />
       ))}
 
       <LoadMoreButton onClick={handleLoadMoreButtonClick}>More</LoadMoreButton>

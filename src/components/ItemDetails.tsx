@@ -62,8 +62,8 @@ type Props = {
 const ItemDetails = (props: Props) => {
   const { itemAuthor, itemID, itemScore, itemEpoch, itemTitle, itemText } = props
 
-  const timeDiff = (itemEpoch: number) => {
-    const diff = Math.abs(Date.now() - itemEpoch * 1000)
+  const timeDiff = (epoch: number) => {
+    const diff = Math.abs(Date.now() - epoch * 1000)
 
     const days: number = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours: number = Math.floor(diff / (1000 * 60 * 60))

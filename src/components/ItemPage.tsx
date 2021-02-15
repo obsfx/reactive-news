@@ -70,8 +70,8 @@ const ItemPage = () => {
           />
 
           <ItemDetailsComments>
-            {details.kids.map((id: number) => (
-              <Comment key={id} id={id} />
+            {details.kids.map((kidID: number) => (
+              <Comment key={kidID} id={kidID} />
             ))}
           </ItemDetailsComments>
         </>
